@@ -9,15 +9,6 @@
 
 也可以使用 `babel-core/register` 让 React 代码能够运行在服务端，具体参考：[https://segmentfault.com/a/1190000012998848](https://segmentfault.com/a/1190000012998848)
 
-## 新建项目
-
-``` bash
-$ mkdir customize-server-side-render
-$ cd customize-server-side-render
-# 初始化一个 package.json
-$ yarn init -y
-```
-
 > 基本项目目录
 
 ```
