@@ -1,4 +1,4 @@
-# TypeScript + Webpack + Koa 搭建自定义的 React 服务端渲染
+# react + Webpack + Koa 搭建自定义的 React 服务端渲染
 
 
 ## 原理：
@@ -48,8 +48,8 @@ function resolveResource(filename) {
 }
 
 module.exports = {
-  clientEntry: resolveResource('src/index.tsx'),
-  serverEntry: resolveResource('src/server.tsx'),
+  clientEntry: resolveResource('src/index.jsx'),
+  serverEntry: resolveResource('src/server.js'),
   sourceDir: resolveResource('src'),
   distDir: resolveResource('dist'),
 };
@@ -59,26 +59,32 @@ module.exports = {
 
 ```javascript
 const paths = require('./paths');
+const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',
   output: {
     path: paths.distDir,
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.ts', '.tsx'],
+    extensions: ['.js', '.jsx'],
   },
+  plugins:[
+    new webpack.ProgressPlugin(),
+  ],
   module: {
     rules: [
       {
-        test: /\.tsx?/,
-        loader: 'ts-loader',
+        test: /\.js|jsx?/,
+        include: paths.sourceDir,
         exclude: /node_modules/,
+        use: ['babel-loader'],
       }
     ],
   },
+
 };
+
 
 ```
 
@@ -97,8 +103,33 @@ const paths = require('./paths');
 
 module.exports = merge(baseConfig, {
   target: 'web',
-  entry: paths.clientEntry,
-})
+  entry: {
+    app: paths.clientEntry,
+  },
+  output: {
+    path: paths.publicDir,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(scss|sass)/,
+        include: paths.sourceDir,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'sass-loader',
+          }
+        ]
+      },
+    ]
+  },
+});
+
 
 ```
 > 运行 webpack --config config/webpack.client.js，打包出在客户端运行的脚本
@@ -135,15 +166,15 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
       {
-        test: /\.tsx?/,
+        test: /\.js|jsx?/,
         include: paths.sourceDir,
         exclude: /node_modules/,
-        loader: 'ts-loader',
+        loader: 'bable-loader',
       },
     ],
   },
@@ -248,7 +279,7 @@ $ yarn add npm-run-all -D
 > 最终启动脚本变为：
 
 ```
-"start": "npm-run-all --parallel \"dev\" \"dev:client\" \"dev:server\""
+"start": "npm-run-all --parallel \"dev:client\" \"dev:server\" \"dev\""
 ```
 
 ## 利用 HTML 模板文件
@@ -387,7 +418,7 @@ ReferenceError: window is not defined
 
 > 可以看到，`StaticRouter` 需要用到请求参数中的 `path` 甚至 `context`，因此需要对结构做一些改变，让 node 启动的入口直接引入 `<App />` ，而不是通过 `require` 加载 webpack 打包过的
 
-* `src` 下面新建 `server` 目录，新建 `index.tsx`，这样服务端的内容也能够使用 `typescript`
+* `src` 下面新建 `server` 目录，新建 `index.jsx`，这样服务端的内容也能够使用 `jsx`
 
 * 把 `server/index.js` 内容转入 `src/server/index.tsx`，安装 `@types/node`
 
