@@ -1,14 +1,12 @@
 import * as React from 'react';
 import './style.scss';
 
-interface IContainerProps {
-  children?: any;
-};
-
-const Container = function({ children }: IContainerProps) {
+const Container = (props) => {
   return (
     <div className='container'>
-      {children}
+      {
+        props.children
+      }
     </div>
   )
 }

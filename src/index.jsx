@@ -10,5 +10,5 @@ hydrate(
       <App />
     </BrowserRouter>
   ),
-  document.querySelector('.app-container') as HTMLElement,
+  document.querySelector('.app-container'),
 );

@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./webpack.base');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const paths = require('./paths');
 
 module.exports = merge(baseConfig, {
@@ -8,6 +9,9 @@ module.exports = merge(baseConfig, {
   entry: {
     'server-entry': paths.serverEntry,
   },
+  plugins:[
+    new CleanWebpackPlugin()
+  ],
   module: {
     rules: [
       {

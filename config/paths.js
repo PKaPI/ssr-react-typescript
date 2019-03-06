@@ -6,8 +6,8 @@ function resolveResource(filename) {
 
 module.exports = {
   sourceDir: resolveResource('src'),
-  clientEntry: resolveResource('src/index.tsx'),
-  serverEntry: resolveResource('src/server/index.tsx'),
+  clientEntry: resolveResource('src/index.jsx'),
+  serverEntry: resolveResource('src/server/index.js'),
   distDir: resolveResource('dist'),
   publicDir: resolveResource('public'),
   htmlTemplate: resolveResource('public/index.html'),

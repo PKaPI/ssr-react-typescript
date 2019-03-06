@@ -6,8 +6,7 @@ import Login from './components/Login';
 import './global.scss';
 
 class App extends React.Component {
-
-  public render() {
+    render() {
     return (
       <Container>
         <Route exact path='/' component={Home}/>

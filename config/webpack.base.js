@@ -1,4 +1,5 @@
 const paths = require('./paths');
+const webpack = require('webpack');
 
 module.exports = {
   output: {
@@ -6,23 +7,20 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
   },
+  plugins:[
+    new webpack.ProgressPlugin(),
+  ],
   module: {
     rules: [
       {
-        test: /\.ts|tsx|js|jsx?/,
+        test: /\.js|jsx?/,
         include: paths.sourceDir,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader'
-          },
-          {
-            loader:'ts-loader'
-          }
-        ]
+        use: ['babel-loader'],
       }
     ],
   },
+
 };

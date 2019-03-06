@@ -7,9 +7,9 @@ import App from '../App';
 
 const template = fs.readFileSync('public/template.html', 'utf8');
 
-export default (ctx: Context) => {
+export default (ctx) => {
   const str = ReactDOMServer.renderToString(
-    <StaticRouter location={ctx.req.url} context={{}}>
+    <StaticRouter location={ctx.req.url} context={Context}>
       <App />
     </StaticRouter>
   );
